@@ -1,6 +1,7 @@
 alias b := build
 alias br := build-release
 alias t := test
+alias f := fmt
 
 build:
     cargo build
@@ -22,3 +23,12 @@ watch:
 
 install:
     cargo install --path .
+
+fmt:
+    cargo fmt
+
+check-fmt:
+    cargo fmt --check
+
+ci:
+    cargo fmt && cargo clippy && cargo check && cargo test

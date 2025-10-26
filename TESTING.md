@@ -215,6 +215,23 @@ for _ in 0..5 {
 ### All Tests
 ```bash
 cargo test --workspace
+# or
+just test
+```
+
+### Code Formatting
+
+**IMPORTANT**: Always run `cargo fmt` after making changes to ensure consistent code formatting:
+
+```bash
+# Format all code
+cargo fmt
+
+# Check formatting without making changes
+cargo fmt --check
+
+# Format and then run tests
+cargo fmt && cargo test
 ```
 
 ### Unit Tests Only

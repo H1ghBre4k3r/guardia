@@ -638,6 +638,34 @@ just install
 sudo ./install.sh
 ```
 
+### Code Formatting
+
+**IMPORTANT**: Always run `cargo fmt` after making changes to ensure consistent code formatting:
+
+```bash
+# Format all code
+cargo fmt
+
+# Check formatting without making changes
+cargo fmt --check
+
+# Format and then build/test
+cargo fmt && cargo build && cargo test
+```
+
+### Code Quality
+
+```bash
+# Run lints (clippy)
+cargo clippy --workspace --all-features -- -D warnings
+
+# Type check
+cargo check --workspace --all-features
+
+# Full CI pipeline
+cargo fmt && cargo clippy && cargo check && cargo test
+```
+
 ## Feature Flags & Build Variants
 
 The project uses feature flags to customize builds. All features are enabled by default.
