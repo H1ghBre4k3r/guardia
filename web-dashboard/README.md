@@ -50,6 +50,21 @@ npm run build
 npm run preview
 ```
 
+### Code Formatting
+
+**IMPORTANT**: Always run code formatting tools after making changes:
+
+```bash
+# Format TypeScript/React code
+npm run lint
+
+# Format Rust code (from project root)
+cargo fmt
+
+# Format and build
+npm run lint && cargo fmt && npm run build
+```
+
 ### Environment
 
 The dashboard connects to the API server via proxy during development. Set `api_url` via environment or proxy configuration in `vite.config.ts`.

@@ -533,6 +533,21 @@ cargo run --bin hub -- -f config.json
 AGENT_PORT=3000 AGENT_SECRET=test cargo run --bin agent
 ```
 
+### Code Formatting
+
+**IMPORTANT**: Always run `cargo fmt` after making changes to ensure consistent code formatting:
+
+```bash
+# Format all code
+cargo fmt
+
+# Check formatting without making changes
+cargo fmt --check
+
+# Format and then build/test
+cargo fmt && cargo build && cargo test
+```
+
 ## 📊 Monitoring Metrics
 
 ### Server Metrics
