@@ -65,7 +65,7 @@ web-dashboard = ["api"]
 wiremock = "0.6"
 
 # Property-based testing framework
-proptest = "1.5"
+proptest = "1.9"
 
 # Enhanced test assertions
 assert_matches = "1.5"
