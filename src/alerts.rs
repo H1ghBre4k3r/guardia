@@ -193,6 +193,7 @@ impl AlertManager {
     /// - `previous_status`: Previous service status (None if first check)
     /// - `current_status`: Current service status
     /// - `error_message`: Optional error message if service is down
+    /// - `grace_period_exhausted`: True if this alert is triggered by grace period exhaustion
     ///
     /// TODO: this should be in an own kind of alert manager, probably.
     #[instrument(skip(self, alert_config))]
@@ -204,15 +205,17 @@ impl AlertManager {
         previous_status: Option<ServiceStatus>,
         current_status: ServiceStatus,
         error_message: Option<&str>,
+        grace_period_exhausted: bool,
     ) {
         // Determine if we should send an alert
-        let should_alert = match (previous_status, current_status) {
-            // Service went down
-            (Some(ServiceStatus::Up), ServiceStatus::Down | ServiceStatus::Degraded) => true,
-            (None, ServiceStatus::Down | ServiceStatus::Degraded) => true,
+        let should_alert = match (previous_status, current_status, grace_period_exhausted) {
+            // Service went down - grace period exhausted
+            // Previous status was Up (or None for first check), now confirmed Down/Degraded
+            (Some(ServiceStatus::Up), ServiceStatus::Down | ServiceStatus::Degraded, true) => true,
+            (None, ServiceStatus::Down | ServiceStatus::Degraded, true) => true,
 
-            // Service recovered
-            (Some(ServiceStatus::Down | ServiceStatus::Degraded), ServiceStatus::Up) => true,
+            // Service recovered (no longer in grace period)
+            (Some(ServiceStatus::Down | ServiceStatus::Degraded), ServiceStatus::Up, false) => true,
 
             // No state change or not significant
             _ => false,
