@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
+    target: 'es2015',
     rollupOptions: {
       output: {
         manualChunks: {

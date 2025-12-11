@@ -114,18 +114,22 @@ pub async fn spawn_api_server(config: ApiConfig, state: ApiState) -> anyhow::Res
     #[cfg(feature = "web-dashboard")]
     {
         use std::path::Path;
-        use tower_http::services::ServeDir;
+        use tower_http::services::{ServeDir, ServeFile};
 
         // Try to serve from dist directory (if it exists)
         let dist_path = Path::new("web-dashboard/dist");
         if dist_path.exists() {
             info!("serving web dashboard from {}", dist_path.display());
+
+            // Serve index.html as fallback for SPA routing
+            let index_path = dist_path.join("index.html");
             let serve_dir = ServeDir::new(dist_path)
                 .precompressed_br()
                 .precompressed_deflate()
-                .precompressed_gzip();
+                .precompressed_gzip()
+                .not_found_service(ServeFile::new(index_path));
 
-            app = app.nest_service("/", serve_dir);
+            app = app.fallback_service(serve_dir);
         } else {
             info!(
                 "web dashboard dist directory not found at {}",
